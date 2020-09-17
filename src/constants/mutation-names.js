@@ -1,0 +1,22 @@
+//App Settings Store
+export const APP_SETTINGS_SYNC = 'APP_SETTINGS_SYNC';
+export const APP_SET_LANGUAGE  = 'SET_LANGUAGE';
+
+
+//Auth Store
+export const AUTH_LOGIN   = 'AUTH_LOGIN';
+export const AUTH_LOGOUT  = 'AUTH_LOGOUT';
+export const AUTH_START_SESSION_TIME  = 'AUTH_START_SESSION_TIME';
+export const ID_SESSION_TIME_INTERVAL = 'ID_SESSION_TIME_INTERVAL';
+export const STOP_ID_SESSION_TIME_INTERVAL = 'STOP_ID_SESSION_TIME_INTERVAL';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_ERROR   = 'AUTH_ERROR';
+
+//User Store
+export const USER_SET_DATA = 'USER_SET_DATA';
+export const USER_CLEAN_DATA = 'USER_CLEAN_DATA';
+export const USER_SET_AVATAR = 'USER_SET_AVATAR';
+export const USER_SET_OBRAS_SOCIALES = 'USER_SET_OBRAS_SOCIALES';
+
+//Notifications Store
+export const NOTIFICATION_SET_DATA = 'NOTIFICATION_SET_DATA';
