@@ -3,8 +3,10 @@
     <v-layout row wrap>
       <v-flex xs12 sm12 md12>
         <v-layout row wrap>
+          <v-flex xs12 sm6 md4></v-flex>
           <v-flex xs12 sm6 md4>
-            <h2>Welcome!</h2>
+            <v-img max-width="495" :src="require('@/assets/paypayLogo.jpg')"></v-img>
+            
           </v-flex>
         </v-layout>
       </v-flex>
