@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
-        <template v-for="item in items">
+        <template v-for="item in items" v-show="item.permission === undefined || $userPermission.hasPermission(item.permission)">
           <v-layout v-if="item.heading" :key="item.heading" align-center>
             <v-flex xs6>
               <v-subheader v-if="item.heading">
@@ -10,7 +10,9 @@
               </v-subheader>
             </v-flex>
           </v-layout>
-          <v-list-group v-else-if="item.children" :key="item.text" v-model="item.model"
+          <v-list-group 
+            v-show="item.permission === undefined || $userPermission.hasPermission(item.permission)"
+            v-else-if="item.children" :key="item.text" v-model="item.model"
             :prepend-icon="item.model ? item.icon : item['icon-alt']" append-icon="">
             <template v-slot:activator>
               <v-list-item>
@@ -21,7 +23,11 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <v-list-item v-for="(child, i) in item.children" :key="i" :to="child.action">
+            <v-list-item 
+              v-for="(child, i) in item.children" 
+              :key="i"
+              v-show="!child.children && (child.permission === undefined || $userPermission.hasPermission(child.permission))"
+              :to="child.action">
               <v-list-item-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-item-action>
@@ -32,7 +38,11 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <v-list-item v-else :key="item.text" :to="item.action" >
+          <v-list-item
+            v-show="item.permission === undefined || $userPermission.hasPermission(item.permission)"
+            v-else 
+            :key="item.text" 
+            :to="item.action">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -52,8 +62,9 @@
           <h2 style="color:LightGray">PayPay</h2>
         </router-link>
       </v-toolbar-title>
-      <v-btn text @click="logOut()" >LogOut</v-btn>
       <v-spacer></v-spacer>
+      <v-btn text @click="assignPermissions('ADMIN')">Admin view</v-btn>
+      <v-btn text @click="assignPermissions('EMPLOYEE')">Employee view</v-btn>
     </v-app-bar>
     <v-content id="container">
       <router-view :key="$route.path"></router-view>
@@ -80,27 +91,21 @@ export default {
       extensionHeight: 48,
       extendedSlot: false,
       items: [
-        { icon: 'supervisor_account', text: 'Employee', action:{name:'Employee'} }
-        , { icon: 'preview', text: 'Review', action:{name:'Review'} }
-        , { icon: 'feedback', text: 'Feedback', action:{name:'Feedback'} }
+        { icon: 'supervisor_account', text: 'Employee', action:{ name:'Employee' }, permission: 'ADMIN' }
+        , { icon: 'preview', text: 'Review', action:{name:'Review'}, permission: 'ADMIN' }
+        , { icon: 'feedback', text: 'Feedback', action:{name:'Feedback'}, permission: 'EMPLOYEE' }
       ],
     }
   }, methods:{
     router(route) {
+      console.log(route)
       this.$router.push({name:route})
     }
-    , async logOut() {
-      try {
-        this.$store.dispatch(actions.STOP_ID_SESSION_TIME_INTERVAL);
-        const respuesta = await Auth.logOut();
-        this.$store.dispatch(actions.AUTH_LOGOUT);
-        if(this.$route.path === '/'){
-          this.$router.go();
-        }else{
-          this.$router.push({name:'Feed'});
-        }
-      } catch (error) {
-       throw error;
+    , assignPermissions(value) {
+      let roles = [ value ];
+      this.$userPermission.set({roles});
+      if(this.$route.path !== '/'){
+        this.router('Feed');
       }
     }
   }, computed:{
@@ -112,6 +117,7 @@ export default {
   , components: {
   }
   , created(){
+    
   }
 };
 </script>
