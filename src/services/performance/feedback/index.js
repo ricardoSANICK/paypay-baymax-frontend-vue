@@ -12,16 +12,7 @@ const getAll = () =>new Promise((resolve,reject)=>{
 
 const save = (feedback) =>new Promise((resolve,reject)=>{
     const {id, description, assigner, assigned, review, status} = feedback;
-    const operation = {
-      feedback :{
-        id, 
-        description, 
-        assigner, 
-        assigned, 
-        review, 
-        status
-      } 
-    } 
+    const operation = { feedback :{ id, description, assigner, assigned, review, status }  } 
   HTTP
   .post(
     '/api/v1/paypay/feedback'
@@ -36,16 +27,7 @@ const save = (feedback) =>new Promise((resolve,reject)=>{
 
 const update = (feedback) =>new Promise((resolve,reject)=>{
     const {id, description, assigner, assigned, review, status} = feedback;
-    const operation = {
-      feedback:{
-        id, 
-        description, 
-        assigner, 
-        assigned, 
-        review, 
-        status
-      } 
-    } 
+    const operation = { feedback:{ id, description, assigner, assigned, review, status } } 
   HTTP
   .put(
     '/api/v1/paypay/feedback'
@@ -68,6 +50,17 @@ const get = (feedback) =>new Promise((resolve,reject)=>{
   });
 });
 
+const disable = (feedback) =>new Promise((resolve,reject)=>{
+  const {id} = feedback;
+  HTTP.delete(
+    `/api/v1/paypay/feedback/${id}`
+  ).then(response=>{
+    resolve(response);
+  }).catch(error=>{
+    reject(error.response);
+  });
+});
+
 
 //Export methods
 export default {
@@ -75,4 +68,5 @@ export default {
   , get
   , save
   , update
+  , disable
 }

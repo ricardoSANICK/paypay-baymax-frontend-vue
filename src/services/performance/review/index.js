@@ -50,6 +50,17 @@ const get = (review) =>new Promise((resolve,reject)=>{
   });
 });
 
+const disable = (review) =>new Promise((resolve,reject)=>{
+  const {id} = review;
+  HTTP.delete(
+    `/api/v1/paypay/review/${id}`
+  ).then(response=>{
+    resolve(response);
+  }).catch(error=>{
+    reject(error.response);
+  });
+});
+
 
 //Export methods
 export default {
@@ -57,4 +68,5 @@ export default {
   , get
   , save
   , update
+  , disable
 }

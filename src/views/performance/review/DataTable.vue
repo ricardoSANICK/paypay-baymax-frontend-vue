@@ -64,7 +64,6 @@
 <script>
 
 import ReviewAPI from "@/services/performance/review";
-import { deleteRecordSwal } from "@/constants/sweet-alerts";
 import PPButtonForm from "@/components/buttons/PPButtonForm";
 
 export default {
@@ -119,11 +118,9 @@ export default {
         console.log(error);
       }
     },
-    async disableRowDatatable(item) { 
-      if((await this.$swal(deleteRecordSwal)).value){
-        const response = await EmployeeAPI.disable(item);
-        this.getAll();
-      }
+    async disableRowDatatable(item) {
+      const response = await ReviewAPI.disable(item);
+      this.getAll();
     }
   },
   computed: {},

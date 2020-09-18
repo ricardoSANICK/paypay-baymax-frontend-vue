@@ -50,6 +50,17 @@ const get = (employee) =>new Promise((resolve,reject)=>{
   });
 });
 
+const disable = (employee) =>new Promise((resolve,reject)=>{
+  const {id} = employee;
+  HTTP.delete(
+    `/api/v1/paypay/employee/${id}`
+  ).then(response=>{
+    resolve(response);
+  }).catch(error=>{
+    reject(error.response);
+  });
+});
+
 
 //Export methods
 export default {
@@ -57,4 +68,5 @@ export default {
   , get
   , save
   , update
+  , disable
 }
